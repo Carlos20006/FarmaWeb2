@@ -55,7 +55,7 @@ $masVendidos = $controller->getMasVendidos(10);
 </div>
 
 <div class="mt-6 flex gap-3">
-    <a href="/FarmaWeb/dashboard.php" class="inline-flex items-center gap-2 px-6 py-3 font-label-md text-label-md text-primary bg-primary-fixed rounded-full hover:bg-primary-fixed-dim transition-all no-underline">
+    <a href="../../dashboard.php" class="inline-flex items-center gap-2 px-6 py-3 font-label-md text-label-md text-primary bg-primary-fixed rounded-full hover:bg-primary-fixed-dim transition-all no-underline">
         <span class="material-symbols-outlined">arrow_back</span> Volver al inicio
     </a>
     <button onclick="window.print()" class="inline-flex items-center gap-2 px-6 py-3 font-label-md text-label-md text-on-surface bg-surface-container-high rounded-full hover:bg-surface-container-highest transition-all">

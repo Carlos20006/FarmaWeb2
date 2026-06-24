@@ -1,8 +1,14 @@
 <?php
 ob_start();
 session_start();
+
+// Detect base URL dynamically from file system path
+$project_root = str_replace('\\', '/', dirname(__FILE__));
+$doc_root = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+$base_url = substr($project_root, strlen($doc_root));
+
 if(!isset($_SESSION['user_id'])){
-    header('Location: /FarmaWeb/login.php');
+    header('Location: ' . $base_url . '/login.php');
     exit;
 }
 
@@ -82,23 +88,36 @@ body { font-family: 'Quicksand', sans-serif; -webkit-font-smoothing: antialiased
 </head>
 <body class="bg-background text-on-surface">
 <header class="bg-surface shadow-[0_4px_15px_rgba(0,0,0,0.06)] fixed top-0 left-0 right-0 z-50">
-<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-[1200px] mx-auto">
+<div class="relative flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-[1200px] mx-auto">
 <div class="flex items-center gap-6">
-<a class="font-headline-md text-headline-md font-bold text-primary" href="/FarmaWeb/dashboard.php">FarmaVida</a>
+<a class="font-headline-md text-headline-md font-bold text-primary" href="<?= $base_url ?>/dashboard.php">FarmaVida</a>
 <nav class="hidden md:flex items-center gap-5">
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="/FarmaWeb/dashboard.php">Dashboard</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="/FarmaWeb/views/medicamentos/index.php">Medicamentos</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="/FarmaWeb/views/lotes/index.php">Lotes</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="/FarmaWeb/views/proveedores/index.php">Proveedores</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="/FarmaWeb/views/clientes/index.php">Clientes</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="/FarmaWeb/views/ventas/index.php">Ventas</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="<?= $base_url ?>/dashboard.php">Dashboard</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="<?= $base_url ?>/views/medicamentos/index.php">Medicamentos</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="<?= $base_url ?>/views/lotes/index.php">Lotes</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="<?= $base_url ?>/views/proveedores/index.php">Proveedores</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="<?= $base_url ?>/views/clientes/index.php">Clientes</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="<?= $base_url ?>/views/ventas/index.php">Ventas</a>
 </nav>
 </div>
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button class="md:hidden p-2 rounded-lg hover:bg-surface-container transition-colors" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')" aria-label="Men&uacute;">
+<span class="material-symbols-outlined text-on-surface-variant">menu</span>
+</button>
 <span class="hidden sm:inline font-body-md text-body-md text-on-surface-variant"><?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
-<a class="font-label-sm text-label-sm text-primary hover:underline flex items-center gap-1" href="/FarmaWeb/logout.php">
+<a class="font-label-sm text-label-sm text-primary hover:underline flex items-center gap-1" href="<?= $base_url ?>/logout.php">
 <span class="material-symbols-outlined text-lg">logout</span> Salir
 </a>
+</div>
+</div>
+<div id="mobileMenu" class="hidden md:hidden bg-surface border-t border-surface-container-low shadow-lg">
+<div class="flex flex-col px-margin-mobile py-3 gap-1">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:bg-surface-container-low px-4 py-3 rounded-xl transition-colors" href="<?= $base_url ?>/dashboard.php">Dashboard</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:bg-surface-container-low px-4 py-3 rounded-xl transition-colors" href="<?= $base_url ?>/views/medicamentos/index.php">Medicamentos</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:bg-surface-container-low px-4 py-3 rounded-xl transition-colors" href="<?= $base_url ?>/views/lotes/index.php">Lotes</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:bg-surface-container-low px-4 py-3 rounded-xl transition-colors" href="<?= $base_url ?>/views/proveedores/index.php">Proveedores</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:bg-surface-container-low px-4 py-3 rounded-xl transition-colors" href="<?= $base_url ?>/views/clientes/index.php">Clientes</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary hover:bg-surface-container-low px-4 py-3 rounded-xl transition-colors" href="<?= $base_url ?>/views/ventas/index.php">Ventas</a>
 </div>
 </div>
 </header>

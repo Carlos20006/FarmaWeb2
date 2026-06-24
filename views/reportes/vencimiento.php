@@ -51,7 +51,7 @@ $vencimientos = $controller->getVencidosProximos();
 </div>
 
 <div class="mt-6">
-    <a href="/FarmaWeb/dashboard.php" class="inline-flex items-center gap-2 px-6 py-3 font-label-md text-label-md text-primary bg-primary-fixed rounded-full hover:bg-primary-fixed-dim transition-all no-underline">
+    <a href="../../dashboard.php" class="inline-flex items-center gap-2 px-6 py-3 font-label-md text-label-md text-primary bg-primary-fixed rounded-full hover:bg-primary-fixed-dim transition-all no-underline">
         <span class="material-symbols-outlined">arrow_back</span> Volver al inicio
     </a>
 </div>
