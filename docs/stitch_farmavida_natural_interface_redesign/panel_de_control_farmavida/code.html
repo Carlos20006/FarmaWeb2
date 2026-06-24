@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FarmaVida - Dashboard de Gestión</title>
+<!-- Google Fonts: Quicksand for the Healing Nature aesthetic -->
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#045044",
+                    "on-primary-fixed": "#00201a",
+                    "primary": "#28695c",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#afefdf",
+                    "inverse-surface": "#303030",
+                    "surface-tint": "#28695c",
+                    "surface-container-highest": "#e4e2e2",
+                    "secondary-container": "#c4e8fb",
+                    "on-background": "#1b1c1c",
+                    "surface-container": "#efeded",
+                    "on-secondary-container": "#476979",
+                    "secondary-fixed-dim": "#a9ccde",
+                    "primary-fixed-dim": "#93d3c3",
+                    "surface-bright": "#fbf9f8",
+                    "surface": "#fbf9f8",
+                    "on-secondary-fixed-variant": "#294b5b",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#ffbbb6",
+                    "outline-variant": "#bfc9c5",
+                    "on-surface": "#1b1c1c",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#6b3836",
+                    "on-primary-container": "#1d6053",
+                    "surface-dim": "#dbd9d9",
+                    "tertiary-fixed": "#ffdad7",
+                    "inverse-primary": "#93d3c3",
+                    "error-container": "#ffdad6",
+                    "background": "#fbf9f8",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#7d4744",
+                    "secondary-fixed": "#c4e8fb",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e4e2e2",
+                    "surface-container-low": "#f5f3f3",
+                    "tertiary-fixed-dim": "#fcb4b0",
+                    "inverse-on-surface": "#f2f0f0",
+                    "secondary": "#416373",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#360e0d",
+                    "error": "#ba1a1a",
+                    "tertiary": "#874f4c",
+                    "on-secondary-fixed": "#001f2a",
+                    "outline": "#6f7976",
+                    "surface-container-high": "#eae8e7",
+                    "primary-container": "#98d8c8",
+                    "on-surface-variant": "#3f4946"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "md": "24px",
+                    "xl": "80px",
+                    "base": "8px",
+                    "sm": "12px",
+                    "lg": "48px",
+                    "xs": "4px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "body-md": ["Quicksand"],
+                    "headline-xl": ["Quicksand"],
+                    "headline-lg": ["Quicksand"],
+                    "label-md": ["Quicksand"],
+                    "headline-md": ["Quicksand"],
+                    "label-sm": ["Quicksand"],
+                    "body-lg": ["Quicksand"],
+                    "headline-lg-mobile": ["Quicksand"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .floating-card {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .floating-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        .squishy-btn:active {
+            transform: scale(0.95);
+        }
+        .notification-bubble {
+            animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .chart-container {
+            mask-image: linear-gradient(to top, transparent, black 10%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-dim shadow-[0_4px_15px_rgba(0,0,0,0.06)] sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-[1200px] mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">FarmaVida</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-semibold border-b-2 border-primary dark:border-primary-fixed-dim pb-1 transition-colors duration-300" href="#">Dashboard</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Inventory</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Prescriptions</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Customers</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container" data-icon="settings">settings</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-xl font-label-md text-label-md squishy-btn transition-all shadow-sm">New Order</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="A warm, approachable portrait of a professional pharmacist in a bright, modern pharmacy environment. The lighting is soft and natural, emphasizing a calm and healing atmosphere. The pharmacist wears a clean white coat over professional attire, smiling with a trustworthy expression. The background features blurred apothecary jars and lush green indoor plants, aligning with the organic minimalism style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWMNytLHN6edovtzwxlsjvgHcXoloHGxXxMkvJ0ViQjx17gEOsntN68TSK_opS1546zWrh3B5OaoapaAzUZA-P5UjpFuyYb_ZIulMgvuSNWen1TkSiYtaGFCZGMd2x2TMm_OhywPydOGB8cL9a3M1CbTs0lAe4Gj-oV9FvKaEQZk3Ct_U5SZ5y-fZyHzl_yrQXLNWzytDhDhWiDCG6s-y6MLso9IOyb-C3vy-w_F3T-S7gMjhrPUNIsYbkbi-tf-1fb8ZX9EeQUAQ"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1200px] mx-auto px-margin-desktop py-lg space-y-lg">
+<!-- Greeting Section -->
+<section class="space-y-2">
+<h1 class="font-headline-xl text-headline-xl text-on-surface">¡Buen día!</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Aquí tienes el resumen de hoy en FarmaVida.</p>
+</section>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Total Sales Card -->
+<div class="floating-card bg-surface-container-lowest p-md rounded-[24px] shadow-[0_4px_15px_rgba(0,0,0,0.06)] flex items-center gap-md">
+<div class="w-14 h-14 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container shadow-sm">
+<span class="material-symbols-outlined text-3xl" data-icon="payments">payments</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Ventas Totales</p>
+<p class="font-headline-md text-headline-md text-on-surface">$12,450.00</p>
+<span class="text-primary font-label-md text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span> +8% hoy
+                    </span>
+</div>
+</div>
+<!-- Stock Status Card -->
+<div class="floating-card bg-surface-container-lowest p-md rounded-[24px] shadow-[0_4px_15px_rgba(0,0,0,0.06)] flex items-center gap-md">
+<div class="w-14 h-14 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container shadow-sm">
+<span class="material-symbols-outlined text-3xl" data-icon="inventory_2">inventory_2</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Productos en Stock</p>
+<p class="font-headline-md text-headline-md text-on-surface">1,284</p>
+<span class="text-on-surface-variant font-label-md text-xs">98% capacidad</span>
+</div>
+</div>
+<!-- Expiring Items Card -->
+<div class="floating-card bg-surface-container-lowest p-md rounded-[24px] shadow-[0_4px_15px_rgba(0,0,0,0.06)] flex items-center gap-md">
+<div class="w-14 h-14 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container shadow-sm">
+<span class="material-symbols-outlined text-3xl" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Por Vencer</p>
+<p class="font-headline-md text-headline-md text-on-surface">12 Lotes</p>
+<span class="text-error font-label-md text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span> Próximos 30 días
+                    </span>
+</div>
+</div>
+</section>
+<!-- Main Content Area: Chart and Notifications -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Weekly Sales Chart -->
+<div class="lg:col-span-8 bg-surface-container-lowest p-lg rounded-[24px] shadow-[0_4px_15px_rgba(0,0,0,0.06)] space-y-6">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface">Ventas Semanales</h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Prescripción</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary-fixed-dim"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Venta Libre</span>
+</div>
+</div>
+</div>
+<!-- Simple CSS Visual Representation of Chart -->
+<div class="h-64 flex items-end justify-between gap-4 pt-4 border-b border-surface-container-highest">
+<div class="flex-1 space-y-1 group">
+<div class="relative w-full h-full flex flex-col justify-end gap-1">
+<div class="bg-secondary-fixed-dim w-full rounded-t-full" style="height: 40%"></div>
+<div class="bg-primary w-full rounded-t-sm" style="height: 35%"></div>
+</div>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant">Lun</p>
+</div>
+<div class="flex-1 space-y-1 group">
+<div class="relative w-full h-full flex flex-col justify-end gap-1">
+<div class="bg-secondary-fixed-dim w-full rounded-t-full" style="height: 55%"></div>
+<div class="bg-primary w-full rounded-t-sm" style="height: 40%"></div>
+</div>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant">Mar</p>
+</div>
+<div class="flex-1 space-y-1 group">
+<div class="relative w-full h-full flex flex-col justify-end gap-1">
+<div class="bg-secondary-fixed-dim w-full rounded-t-full" style="height: 30%"></div>
+<div class="bg-primary w-full rounded-t-sm" style="height: 60%"></div>
+</div>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant">Mié</p>
+</div>
+<div class="flex-1 space-y-1 group">
+<div class="relative w-full h-full flex flex-col justify-end gap-1">
+<div class="bg-secondary-fixed-dim w-full rounded-t-full" style="height: 70%"></div>
+<div class="bg-primary w-full rounded-t-sm" style="height: 25%"></div>
+</div>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant">Jue</p>
+</div>
+<div class="flex-1 space-y-1 group">
+<div class="relative w-full h-full flex flex-col justify-end gap-1">
+<div class="bg-secondary-fixed-dim w-full rounded-t-full" style="height: 50%"></div>
+<div class="bg-primary w-full rounded-t-sm" style="height: 45%"></div>
+</div>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant">Vie</p>
+</div>
+<div class="flex-1 space-y-1 group">
+<div class="relative w-full h-full flex flex-col justify-end gap-1">
+<div class="bg-secondary-fixed-dim w-full rounded-t-full" style="height: 85%"></div>
+<div class="bg-primary w-full rounded-t-sm" style="height: 10%"></div>
+</div>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant">Sáb</p>
+</div>
+<div class="flex-1 space-y-1 group">
+<div class="relative w-full h-full flex flex-col justify-end gap-1">
+<div class="bg-secondary-fixed-dim w-full rounded-t-full" style="height: 20%"></div>
+<div class="bg-primary w-full rounded-t-sm" style="height: 15%"></div>
+</div>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant">Dom</p>
+</div>
+</div>
+</div>
+<!-- Notifications Area -->
+<div class="lg:col-span-4 space-y-4">
+<div class="flex items-center justify-between px-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Alertas</h3>
+<span class="bg-tertiary-container text-on-tertiary-container text-xs px-2 py-1 rounded-full font-bold">3 Nuevas</span>
+</div>
+<!-- Notification Bubbles -->
+<div class="space-y-3">
+<div class="notification-bubble bg-tertiary-fixed text-on-tertiary-fixed p-4 rounded-[20px] flex gap-3 items-start shadow-sm" style="animation-delay: 0.1s;">
+<span class="material-symbols-outlined mt-1" data-icon="inventory">inventory</span>
+<div>
+<p class="font-label-md text-label-md">Stock Crítico</p>
+<p class="font-body-md text-sm opacity-80">Amoxicilina 500mg queda menos de 10 unidades.</p>
+</div>
+</div>
+<div class="notification-bubble bg-secondary-fixed text-on-secondary-fixed p-4 rounded-[20px] flex gap-3 items-start shadow-sm" style="animation-delay: 0.2s;">
+<span class="material-symbols-outlined mt-1" data-icon="history">history</span>
+<div>
+<p class="font-label-md text-label-md">Lote por Vencer</p>
+<p class="font-body-md text-sm opacity-80">Lote #9928 (Paracetamol) vence en 5 días.</p>
+</div>
+</div>
+<div class="notification-bubble bg-surface-container-highest text-on-surface p-4 rounded-[20px] flex gap-3 items-start shadow-sm" style="animation-delay: 0.3s;">
+<span class="material-symbols-outlined mt-1" data-icon="assignment_late">assignment_late</span>
+<div>
+<p class="font-label-md text-label-md">Receta Pendiente</p>
+<p class="font-body-md text-sm opacity-80">Revisión necesaria para orden #4402.</p>
+</div>
+</div>
+</div>
+<!-- Nature/Healing Visual Element -->
+<div class="rounded-[24px] overflow-hidden relative h-48 group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A serene, minimalist macro photography shot of a single green leaf with morning dew drops. The background is a soft, out-of-focus dreamscape of mint and sky blue colors. The lighting is ethereal and bright, conveying a sense of freshness, health, and natural healing. High-end aesthetic with a clean, calm, and professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDapwAGcXkS2hZ1DSRk6gM6kzDUj_42XICXMBi5j78i3eJwRr3-Ga7HdPpBaEu41xzda4AwGR_ZHu2w3CuwxVEs2TNZaMGYxvTUhp4PdT-jEGk8oYPDO4McnhlWp44BFyWAX3hkJ0HXwCnDS0uOLWMfLN1WD47O3anMZhEk5ReNJDQWC_s8Gg7pBZuMF6AHypwd-VEMWjhAvWiclq3_np3iLLyGGgwR067oJ1VQtqmh5eJCP8Ij9usYUnvylPYX3XWsqNResg8m9IE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex items-end p-6">
+<p class="text-on-primary font-headline-md text-lg italic">"La naturaleza cura, el médico solo ayuda."</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Actions Section -->
+<section class="space-y-4">
+<h3 class="font-headline-md text-headline-md text-on-surface px-2">Acceso Rápido</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<button class="floating-card bg-surface-container-low p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-primary-fixed group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" data-icon="add_circle">add_circle</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Nueva Venta</span>
+</button>
+<button class="floating-card bg-surface-container-low p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-primary-fixed group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" data-icon="vaccines">vaccines</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Inventario</span>
+</button>
+<button class="floating-card bg-surface-container-low p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-primary-fixed group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" data-icon="group">group</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Clientes</span>
+</button>
+<button class="floating-card bg-surface-container-low p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-primary-fixed group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" data-icon="description">description</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Recetas</span>
+</button>
+<button class="floating-card bg-surface-container-low p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-primary-fixed group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Reportes</span>
+</button>
+<button class="floating-card bg-surface-container-low p-4 rounded-2xl flex flex-col items-center gap-2 hover:bg-primary-fixed group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform" data-icon="support_agent">support_agent</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Soporte</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-lowest w-full py-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-base mt-20">
+<div class="flex flex-col items-center md:items-start gap-1">
+<span class="font-label-md text-label-md font-bold text-primary">FarmaVida</span>
+<p class="font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim">© 2024 FarmaVida Pharmacy Management. Healing Nature Design System.</p>
+</div>
+<nav class="flex gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Support</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+</nav>
+</footer>
+<!-- Floating Action Button for Dashboard Context -->
+<div class="fixed bottom-8 right-8 z-40">
+<button class="bg-primary text-on-primary w-16 h-16 rounded-full shadow-lg flex items-center justify-center squishy-btn hover:shadow-xl transition-all group overflow-hidden">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300" data-icon="add">add</span>
+</button>
+</div>
+<script>
+        // Micro-interactions and subtle atmospheric effects
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.floating-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
+                    
+                    card.style.transform = `perspective(1000px) translateY(-4px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) translateY(0) rotateX(0) rotateY(0)`;
+                });
+            });
+
+            // Ripple effect on buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    let ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    this.appendChild(ripple);
+                    let x = e.clientX - e.target.offsetLeft;
+                    let y = e.clientY - e.target.offsetTop;
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        });
+    </script>
+<style>
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            border-radius: 50%;
+            animation: ripple-effect 0.6s linear;
+        }
+        @keyframes ripple-effect {
+            0% { width: 0; height: 0; }
+            100% { width: 400px; height: 400px; opacity: 0; }
+        }
+    </style>
+</body></html>

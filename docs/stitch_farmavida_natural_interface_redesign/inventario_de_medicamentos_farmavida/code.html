@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inventario | FarmaVida</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #fbf9f8;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .squishy-btn:active {
+            transform: scale(0.95);
+        }
+        .row-hover:hover {
+            transform: translateY(-2px);
+            background-color: #f5f5f5;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fbf9f8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bfc9c5;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #28695c;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#045044",
+                      "on-primary-fixed": "#00201a",
+                      "primary": "#28695c",
+                      "on-secondary": "#ffffff",
+                      "primary-fixed": "#afefdf",
+                      "inverse-surface": "#303030",
+                      "surface-tint": "#28695c",
+                      "surface-container-highest": "#e4e2e2",
+                      "secondary-container": "#c4e8fb",
+                      "on-background": "#1b1c1c",
+                      "surface-container": "#efeded",
+                      "on-secondary-container": "#476979",
+                      "secondary-fixed-dim": "#a9ccde",
+                      "primary-fixed-dim": "#93d3c3",
+                      "surface-bright": "#fbf9f8",
+                      "surface": "#fbf9f8",
+                      "on-secondary-fixed-variant": "#294b5b",
+                      "on-primary": "#ffffff",
+                      "tertiary-container": "#ffbbb6",
+                      "outline-variant": "#bfc9c5",
+                      "on-surface": "#1b1c1c",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#6b3836",
+                      "on-primary-container": "#1d6053",
+                      "surface-dim": "#dbd9d9",
+                      "tertiary-fixed": "#ffdad7",
+                      "inverse-primary": "#93d3c3",
+                      "error-container": "#ffdad6",
+                      "background": "#fbf9f8",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-container": "#7d4744",
+                      "secondary-fixed": "#c4e8fb",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-variant": "#e4e2e2",
+                      "surface-container-low": "#f5f3f3",
+                      "tertiary-fixed-dim": "#fcb4b0",
+                      "inverse-on-surface": "#f2f0f0",
+                      "secondary": "#416373",
+                      "on-error": "#ffffff",
+                      "on-tertiary-fixed": "#360e0d",
+                      "error": "#ba1a1a",
+                      "tertiary": "#874f4c",
+                      "on-secondary-fixed": "#001f2a",
+                      "outline": "#6f7976",
+                      "surface-container-high": "#eae8e7",
+                      "primary-container": "#98d8c8",
+                      "on-surface-variant": "#3f4946"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "md": "24px",
+                      "xl": "80px",
+                      "base": "8px",
+                      "sm": "12px",
+                      "lg": "48px",
+                      "xs": "4px",
+                      "margin-desktop": "40px"
+              },
+              "fontFamily": {
+                      "body-md": ["Quicksand"],
+                      "headline-xl": ["Quicksand"],
+                      "headline-lg": ["Quicksand"],
+                      "label-md": ["Quicksand"],
+                      "headline-md": ["Quicksand"],
+                      "label-sm": ["Quicksand"],
+                      "body-lg": ["Quicksand"],
+                      "headline-lg-mobile": ["Quicksand"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Top Navigation Shell -->
+<header class="bg-surface dark:bg-surface-dim shadow-[0_4px_15px_rgba(0,0,0,0.06)] fixed full-width top-0 z-50 w-full">
+<div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-[1200px] mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">FarmaVida</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 font-body-md text-body-md" href="#">Dashboard</a>
+<a class="text-primary dark:text-primary-fixed-dim font-semibold border-b-2 border-primary dark:border-primary-fixed-dim pb-1 font-body-md text-body-md" href="#">Inventory</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 font-body-md text-body-md" href="#">Prescriptions</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 font-body-md text-body-md" href="#">Customers</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 font-body-md text-body-md" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a pharmacist wearing a clean white coat in a bright, modern pharmacy setting with soft, warm lighting. The style is minimalist and clean, reflecting a healing nature aesthetic with blurred medicinal herbs in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMd7wCP-rS2J-sgGosb_gkVra_qBjpaYlgp8D6MwKGzdvyfOSKUTDpE1MJHpYsw9x0-SYFnUiGbtpPvlDrnrnnFg_2Z_eQ52qabuucRwJn-iRKe5ukq7HxlbEqUN0msLvPGrGFnZEIQfoJf6PguIKUhZWZYC2vYMl8GqIR0JLYIbEVuU8nZY-ZYWxqvRrdSBi27PIV3ewcR5v_AzPY3GzU7xp9cWqGRwjSBYXnhPO5LcDlT13uvDtaTr_BSVaCtoNx8B-5lZEk1X4"/>
+</div>
+</div>
+</div>
+</header>
+<main class="mt-24 mb-20 max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop">
+<!-- Header & Action Row -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-primary mb-2">Inventario de Medicamentos</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Gestione existencias, categorías y precios de su farmacia con claridad y precisión orgánica.</p>
+</div>
+<button class="squishy-btn flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full font-label-md text-label-md shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-all duration-300">
+<span class="material-symbols-outlined">add</span>
+                Nuevo Medicamento
+            </button>
+</section>
+<!-- Search & Filter Card -->
+<div class="glass-card rounded-[24px] p-6 mb-8 shadow-[0_4px_15px_rgba(0,0,0,0.06)]">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-12 pr-6 py-3 bg-[#f0f0f0] border-none rounded-full focus:ring-2 focus:ring-secondary-container focus:bg-white transition-all font-body-md text-body-md outline-none" placeholder="Buscar por nombre o categoría..." type="text"/>
+</div>
+</div>
+<!-- Inventory Table Section -->
+<div class="glass-card rounded-[24px] overflow-hidden shadow-[0_4px_15px_rgba(0,0,0,0.06)] relative">
+<!-- Decorative Nature Icon (Leaf) -->
+<div class="absolute -right-8 -bottom-8 opacity-5 pointer-events-none transform -rotate-12">
+<span class="material-symbols-outlined text-[200px] text-primary" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-8 py-5 font-label-md text-label-md text-primary uppercase tracking-wider">Nombre</th>
+<th class="px-8 py-5 font-label-md text-label-md text-primary uppercase tracking-wider">Categoría</th>
+<th class="px-8 py-5 font-label-md text-label-md text-primary uppercase tracking-wider">Stock</th>
+<th class="px-8 py-5 font-label-md text-label-md text-primary uppercase tracking-wider">Precio</th>
+<th class="px-8 py-5 font-label-md text-label-md text-primary uppercase tracking-wider text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#f5f3f3]">
+<!-- Row 1 -->
+<tr class="row-hover transition-all duration-300 group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">pill</span>
+<span class="font-body-md text-body-md text-on-surface">Amoxicilina 500mg</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-label-sm font-label-sm">Antibiótico</span>
+</td>
+<td class="px-8 py-6">
+<span class="font-body-md text-body-md text-on-surface">142 unidades</span>
+</td>
+<td class="px-8 py-6">
+<span class="font-body-md text-body-md font-semibold text-on-surface">$12.50</span>
+</td>
+<td class="px-8 py-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 rounded-full bg-secondary-fixed hover:bg-secondary transition-colors text-on-secondary-fixed squishy-btn">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 rounded-full bg-tertiary-container hover:bg-tertiary transition-colors text-on-tertiary-container squishy-btn">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="row-hover transition-all duration-300 group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">vaccines</span>
+<span class="font-body-md text-body-md text-on-surface">Paracetamol Jarabe</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-label-sm font-label-sm">Analgésico</span>
+</td>
+<td class="px-8 py-6">
+<span class="font-body-md text-body-md text-error">12 unidades</span>
+</td>
+<td class="px-8 py-6">
+<span class="font-body-md text-body-md font-semibold text-on-surface">$8.75</span>
+</td>
+<td class="px-8 py-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 rounded-full bg-secondary-fixed hover:bg-secondary transition-colors text-on-secondary-fixed squishy-btn">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 rounded-full bg-tertiary-container hover:bg-tertiary transition-colors text-on-tertiary-container squishy-btn">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="row-hover transition-all duration-300 group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">medical_services</span>
+<span class="font-body-md text-body-md text-on-surface">Loratadina 10mg</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-label-sm font-label-sm">Antihistamínico</span>
+</td>
+<td class="px-8 py-6">
+<span class="font-body-md text-body-md text-on-surface">85 unidades</span>
+</td>
+<td class="px-8 py-6">
+<span class="font-body-md text-body-md font-semibold text-on-surface">$5.20</span>
+</td>
+<td class="px-8 py-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 rounded-full bg-secondary-fixed hover:bg-secondary transition-colors text-on-secondary-fixed squishy-btn">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 rounded-full bg-tertiary-container hover:bg-tertiary transition-colors text-on-tertiary-container squishy-btn">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="row-hover transition-all duration-300 group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">medication_liquid</span>
+<span class="font-body-md text-body-md text-on-surface">Omeprazol 20mg</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-label-sm font-label-sm">Gastrointestinal</span>
+</td>
+<td class="px-8 py-6">
+<span class="font-body-md text-body-md text-on-surface">210 unidades</span>
+</td>
+<td class="px-8 py-6">
+<span class="font-body-md text-body-md font-semibold text-on-surface">$18.30</span>
+</td>
+<td class="px-8 py-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 rounded-full bg-secondary-fixed hover:bg-secondary transition-colors text-on-secondary-fixed squishy-btn">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 rounded-full bg-tertiary-container hover:bg-tertiary transition-colors text-on-tertiary-container squishy-btn">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Empty State Illustration (Decorative) -->
+<div class="mt-16 flex flex-col items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-primary text-6xl mb-4">opacity</span>
+<p class="font-body-md text-body-md italic">Manteniendo la salud con cada registro</p>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="bg-surface-container-low dark:bg-surface-container-lowest w-full py-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-base">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-label-md text-label-md font-bold text-primary">FarmaVida</span>
+<span class="font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim text-center md:text-left">© 2024 FarmaVida Pharmacy Management. Healing Nature Design System.</span>
+</div>
+<nav class="flex gap-8">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors font-label-sm text-label-sm" href="#">Support</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors font-label-sm text-label-sm" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors font-label-sm text-label-sm" href="#">Terms of Service</a>
+</nav>
+</footer>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.querySelectorAll('.squishy-btn').forEach(btn => {
+            btn.addEventListener('mousedown', () => btn.style.transform = 'scale(0.95)');
+            btn.addEventListener('mouseup', () => btn.style.transform = 'scale(1)');
+            btn.addEventListener('mouseleave', () => btn.style.transform = 'scale(1)');
+        });
+
+        // Simple table filter mock
+        const searchInput = document.querySelector('input[type="text"]');
+        const rows = document.querySelectorAll('tbody tr');
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+    </script>
+</body></html>
