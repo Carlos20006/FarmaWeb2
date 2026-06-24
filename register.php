@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'config/db.php';
+require_once 'models/Usuario.php';
 
 if(isset($_SESSION['user_id'])){
     header('Location: dashboard.php');
@@ -8,23 +9,42 @@ if(isset($_SESSION['user_id'])){
 }
 
 $error = '';
+$success = false;
+
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
 
-    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE nombre_usuario = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch();
-
-    if($user && password_verify($password, $user['password_hash'])){
-        session_regenerate_id(true);
-        $_SESSION['user_id'] = $user['id_usuario'];
-        $_SESSION['user_name'] = $user['nombre_usuario'];
-        $_SESSION['rol'] = $user['rol'];
-        header('Location: dashboard.php');
-        exit;
+    if(strlen($username) < 3 || strlen($username) > 50){
+        $error = "El usuario debe tener entre 3 y 50 caracteres";
+    } elseif(!preg_match("/^[a-zA-Z0-9_]+$/", $username)){
+        $error = "El usuario solo puede contener letras, n&uacute;meros y guiones bajos";
+    } elseif(strlen($password) < 6){
+        $error = "La contrase&ntilde;a debe tener al menos 6 caracteres";
+    } elseif($password !== $confirm_password){
+        $error = "Las contrase&ntilde;as no coinciden";
     } else {
-        $error = "Usuario o contrase&ntilde;a incorrectos";
+        $usuarioModel = new Usuario($pdo);
+        $existing = $usuarioModel->findByUsername($username);
+
+        if($existing){
+            $error = "El nombre de usuario ya est&aacute; en uso";
+        } else {
+            $result = $usuarioModel->create($username, $password, 'vendedor');
+
+            if($result){
+                session_regenerate_id(true);
+                $user = $usuarioModel->findByUsername($username);
+                $_SESSION['user_id'] = $user['id_usuario'];
+                $_SESSION['user_name'] = $user['nombre_usuario'];
+                $_SESSION['rol'] = $user['rol'];
+                header('Location: dashboard.php');
+                exit;
+            } else {
+                $error = "Error al crear la cuenta. Intente de nuevo.";
+            }
+        }
     }
 }
 ?>
@@ -33,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>FarmaVida - Iniciar Sesi&oacute;n</title>
+<title>FarmaVida - Crear Cuenta</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -51,8 +71,8 @@ tailwind.config = {
 </script>
 <style>
 body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg, #fbf9f8 0%, #e8f3f0 50%, #d4e8e3 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-.login-card { box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-.login-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+.card { box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
 .input-field:focus { box-shadow: 0 0 0 4px rgba(152, 216, 200, 0.4); background-color: #ffffff; border-color: #28695c; }
 .btn-press:active { transform: scale(0.95); }
 .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
@@ -69,18 +89,18 @@ body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg,
 <div class="absolute bottom-10 right-10 opacity-10 pointer-events-none float-anim" style="animation-delay: -2s;">
 <span class="material-symbols-outlined text-[180px] text-primary-container" style="font-variation-settings:'FILL'1">spa</span>
 </div>
-<div class="absolute top-1/2 right-5 opacity-5 pointer-events-none pulse">
+<div class="absolute top-1/2 left-5 opacity-5 pointer-events-none pulse">
 <span class="material-symbols-outlined text-[100px] text-primary" style="font-variation-settings:'FILL'1">local_pharmacy</span>
 </div>
 
 <main class="w-full max-w-[420px] px-margin-mobile md:px-0">
-<div class="login-card bg-surface-container-lowest rounded-[24px] p-8 md:p-10 relative overflow-hidden">
+<div class="card bg-surface-container-lowest rounded-[24px] p-8 md:p-10 relative overflow-hidden">
 <header class="text-center mb-8">
 <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary-container rounded-2xl mb-5 shadow-lg shadow-primary/20">
-<span class="material-symbols-outlined text-on-primary text-3xl" style="font-variation-settings:'FILL'1">health_and_safety</span>
+<span class="material-symbols-outlined text-on-primary text-3xl" style="font-variation-settings:'FILL'1">person_add</span>
 </div>
-<h1 class="text-headline-md text-headline-md text-primary mb-1">FarmaVida</h1>
-<p class="font-body-md text-body-md text-on-surface-variant">Cuidamos de tu salud</p>
+<h1 class="text-headline-md text-headline-md text-primary mb-1">Crear Cuenta</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Reg&iacute;strate en FarmaVida</p>
 </header>
 
 <form method="POST" class="space-y-5">
@@ -88,7 +108,7 @@ body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg,
 <label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="username">Usuario</label>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">person</span>
-<input class="input-field w-full h-14 pl-12 pr-4 bg-surface-container rounded-[16px] border border-transparent outline-none font-body-md text-body-md text-on-surface transition-all duration-300" id="username" name="username" placeholder="Ingrese su usuario" type="text" required autofocus/>
+<input class="input-field w-full h-14 pl-12 pr-4 bg-surface-container rounded-[16px] border border-transparent outline-none font-body-md text-body-md text-on-surface transition-all duration-300" id="username" name="username" placeholder="Cree un nombre de usuario" type="text" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" required autofocus minlength="3" maxlength="50"/>
 </div>
 </div>
 
@@ -96,9 +116,20 @@ body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg,
 <label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="password">Contrase&ntilde;a</label>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">lock</span>
-<input class="input-field w-full h-14 pl-12 pr-12 bg-surface-container rounded-[16px] border border-transparent outline-none font-body-md text-body-md text-on-surface transition-all duration-300" id="password" name="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" type="password" required/>
-<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" type="button" onclick="togglePassword()">
+<input class="input-field w-full h-14 pl-12 pr-12 bg-surface-container rounded-[16px] border border-transparent outline-none font-body-md text-body-md text-on-surface transition-all duration-300" id="password" name="password" placeholder="M&iacute;nimo 6 caracteres" type="password" required minlength="6"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" type="button" onclick="togglePass('password', 'passIcon')">
 <span class="material-symbols-outlined" id="passIcon">visibility</span>
+</button>
+</div>
+</div>
+
+<div class="space-y-2">
+<label class="block font-label-md text-label-md text-on-surface-variant ml-1" for="confirm_password">Confirmar Contrase&ntilde;a</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">lock</span>
+<input class="input-field w-full h-14 pl-12 pr-12 bg-surface-container rounded-[16px] border border-transparent outline-none font-body-md text-body-md text-on-surface transition-all duration-300" id="confirm_password" name="confirm_password" placeholder="Repita la contrase&ntilde;a" type="password" required minlength="6"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" type="button" onclick="togglePass('confirm_password', 'confirmPassIcon')">
+<span class="material-symbols-outlined" id="confirmPassIcon">visibility</span>
 </button>
 </div>
 </div>
@@ -111,15 +142,15 @@ body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg,
 <?php endif; ?>
 
 <button class="btn-press w-full h-14 bg-primary text-on-primary font-headline-md text-headline-md rounded-[16px] shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 flex items-center justify-center gap-2" type="submit">
-<span>Entrar</span>
-<span class="material-symbols-outlined">arrow_forward</span>
+<span>Crear Cuenta</span>
+<span class="material-symbols-outlined">person_add</span>
 </button>
 </form>
 
 <footer class="mt-8 pt-6 border-t border-surface-variant text-center space-y-3">
 <p class="font-label-sm text-label-sm text-outline">
-&iquest;No tienes cuenta?
-<a href="register.php" class="text-primary hover:underline font-semibold">Crear cuenta</a>
+¿Ya tienes cuenta?
+<a href="login.php" class="text-primary hover:underline font-semibold">Inicia sesi&oacute;n</a>
 </p>
 <p class="font-label-sm text-label-sm text-outline">&copy; 2024 FarmaVida Pharmacy Management.</p>
 </footer>
@@ -127,9 +158,9 @@ body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg,
 </main>
 
 <script>
-function togglePassword() {
-    const input = document.getElementById('password');
-    const icon = document.getElementById('passIcon');
+function togglePass(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
     if (input.type === 'password') {
         input.type = 'text';
         icon.textContent = 'visibility_off';
@@ -138,12 +169,6 @@ function togglePassword() {
         icon.textContent = 'visibility';
     }
 }
-
-document.querySelector('button[type="submit"]')?.addEventListener('click', function() {
-    const original = this.innerHTML;
-    this.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span class="ml-2">Ingresando...</span>';
-    setTimeout(() => { this.innerHTML = original; }, 3000);
-});
 </script>
 </body>
 </html>
