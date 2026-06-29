@@ -87,7 +87,7 @@ CREATE TABLE venta_detalle (
 
 -- Insertar usuario admin (contraseña: admin123)
 INSERT INTO usuarios (nombre_usuario, password_hash, rol) 
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+VALUES ('admin', '$2y$10$cuhvMdpKlUGcl/ULxu/sYOwvLsdXMkVF3X512Iy0pD/.Pxhzfyay6', 'admin');
 
 -- Datos de prueba
 INSERT INTO medicamentos (nombre_generico, presentacion, categoria, precio, stock_minimo) VALUES
